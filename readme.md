@@ -675,13 +675,13 @@ useLogStore.getState().logs  // 查看所有日志
 
 ## 📞 联系方式
 
-- **项目作者**: ZHO
-- **GitHub**: [项目仓库链接]
-- **问题反馈**: [Issues 页面]
+- **项目作者**: AMEUREKA
+- **GitHub**: https://github.com/ameureka/nano-bananary-playground
+- **问题反馈**: https://github.com/ameureka/nano-bananary-playground/issues
 
 ---
 
-**Made with ❤️ by ZHO**
+**Made with ❤️ by AMEUREKA**
 
 *香蕉PS乐园 - 让创意触手可及* 🍌✨
 
