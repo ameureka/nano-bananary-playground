@@ -1,0 +1,5 @@
+{
+  "name": "香蕉PS乐园 (Banana PS Playground)",
+  "description": "上传一张图片，并从86种创意效果中选择一种，使用谷歌强大的图像模型来编辑或生成新版本。",
+  "requestFramePermissions": []
+}

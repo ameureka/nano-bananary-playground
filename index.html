@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🍌 香蕉PS乐园</title>
+    
+    <!-- 预连接到 Google 字体服务器以提高加载速度 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 引入 'Exo 2' 和 'Roboto' 字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入 Google Material Symbols 图标库 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+  <!-- importmap 用于在浏览器中直接管理 ES 模块的导入路径，无需打包工具 -->
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.1.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.17.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^6.25.1",
+    "zustand": "https://aistudiocdn.com/zustand@^4.5.4",
+    "zustand/middleware": "https://aistudiocdn.com/zustand@^4.5.4/middleware",
+    "zustand/": "https://aistudiocdn.com/zustand@^5.0.8/"
+  }
+}
+</script>
+<!-- 引入应用的 CSS 样式 -->
+<link rel="stylesheet" href="/styles/globals.css">
+<!-- 移除遗留的 index.css 链接，样式集中于 styles/globals.css -->
+</head>
+  <body>
+    <!-- 初始加载动画 -->
+    <div id="loader"><h1>🍌 香蕉PS乐园</h1></div>
+    <!-- React 应用的挂载点 -->
+    <div id="root"></div>
+    <!-- 引入 React 应用的入口脚本 -->
+    <script type="module" src="/index.tsx"></script>
+    <script>
+      // 页面加载完成后，平滑地隐藏加载动画
+      const hideLoader = () => {
+        const loader = document.getElementById('loader');
+        if (!loader) return;
+        loader.style.opacity = '0';
+        setTimeout(() => { loader.style.display = 'none'; }, 300);
+      };
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        requestAnimationFrame(hideLoader);
+      } else {
+        window.addEventListener('DOMContentLoaded', hideLoader, { once: true });
+        window.addEventListener('load', hideLoader, { once: true });
+      }
+      
+      // 全局水波纹效果逻辑
+      function createRipple(event, surface) {
+          const rect = surface.getBoundingClientRect();
+          const circle = document.createElement("span");
+          const diameter = Math.max(rect.width, rect.height);
+          const radius = diameter / 2;
+
+          circle.style.width = circle.style.height = `${diameter}px`;
+          circle.style.left = `${event.clientX - rect.left - radius}px`;
+          circle.style.top = `${event.clientY - rect.top - radius}px`;
+          circle.classList.add("ripple-effect");
+
+          // 移除旧的水波纹效果，确保一次只有一个
+          const oldRipple = surface.querySelector(".ripple-effect");
+          if (oldRipple) {
+              oldRipple.remove();
+          }
+
+          surface.appendChild(circle);
+
+          // 动画结束后移除元素
+          circle.addEventListener('animationend', () => {
+              circle.remove();
+          });
+      }
+
+      // 使用事件委托来处理动态创建的元素上的水波纹效果
+      document.addEventListener('mousedown', function(event) {
+          if (event.button !== 0) return; // 仅处理鼠标左键点击
+          
+          // 查找点击目标或其父元素中带有 .ripple-surface 类名的元素
+          const surface = event.target.closest('.ripple-surface');
+          if (surface) {
+              createRipple(event, surface);
+          }
+      });
+    </script>
+  </body>
+</html>
