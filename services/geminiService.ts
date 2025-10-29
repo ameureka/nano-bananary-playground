@@ -9,8 +9,14 @@ import { useLogStore } from '@/store/logStore';
 // 注意：此服务现在仅在服务端 API Routes 中使用
 import { getGeminiApiKey } from '@/lib/env.server';
 
-// 初始化 GoogleGenAI 实例
-const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
+// 按需（惰性）初始化 GoogleGenAI 实例，避免在构建阶段访问未配置的环境变量
+let aiClient: GoogleGenAI | null = null;
+const getAi = (): GoogleGenAI => {
+    if (!aiClient) {
+        aiClient = new GoogleGenAI({ apiKey: getGeminiApiKey() });
+    }
+    return aiClient;
+};
 
 /**
  * 标准化的 Gemini API 调用错误处理器
@@ -124,7 +130,7 @@ export async function editImage(
 
   // 执行 API 请求
   const response = await handleApiRequest<GenerateContentResponse>(
-    () => ai.models.generateContent({
+    () => getAi().models.generateContent({
       model: model,
       contents: { parts },
       config: {
@@ -186,7 +192,7 @@ export async function generateStyleMimicImage(
     
     // 第1步：从风格图片生成风格描述提示
     const stylePromptGenResponse = await handleApiRequest<GenerateContentResponse>(
-      () => ai.models.generateContent({
+      () => getAi().models.generateContent({
           model: stylePromptModel,
           contents: {
               parts: [
@@ -253,7 +259,7 @@ ${allPrompts}
         }
         
         const response = await handleApiRequest<GenerateContentResponse>(
-          () => ai.models.generateContent({
+          () => getAi().models.generateContent({
               model: model,
               contents: { parts },
               config: {
@@ -306,7 +312,7 @@ export async function generateImageInChat(
   if (creativeDiversification && numImages > 1 && !isMultimodalRequest) {
     const modelUsed = 'gemini-2.5-flash (for prompts) + imagen-4.0-generate-001 (for images)';
     const diversePromptsResponse = await handleApiRequest<GenerateContentResponse>(
-      () => ai.models.generateContent({
+      () => getAi().models.generateContent({
         model: 'gemini-2.5-flash',
         contents: `Based on the user's prompt "${prompt}", create ${numImages} distinct, detailed, and imaginative prompts for an AI image generator. They should explore different styles, subjects, and compositions.`,
         config: {
@@ -400,7 +406,7 @@ export async function generateImageInChat(
   
   const generateSingleImage = async () => {
       const response = await handleApiRequest<GenerateContentResponse>(
-        () => ai.models.generateContent({
+        () => getAi().models.generateContent({
           model: modelUsed,
           contents: allContents,
           config: {
@@ -458,7 +464,7 @@ export async function getTransformationSuggestions(
         只返回一个 JSON 对象，其中包含一个 "suggestions" 属性，该属性是一个包含最相关变换 key 的字符串数组。例如：{"suggestions": ["key1", "key2", "key3"]}`;
         
         const response = await handleApiRequest<GenerateContentResponse>(
-          () => ai.models.generateContent({
+          () => getAi().models.generateContent({
               model,
               contents: prompt,
               config: {
@@ -550,7 +556,7 @@ export async function generateImageFromText(
   }
 
   const response = await handleApiRequest<GenerateImagesResponse>(
-    () => ai.models.generateImages({
+    () => getAi().models.generateImages({
         model: model,
         prompt: prompt,
         config: config,
@@ -610,7 +616,7 @@ export async function generateVideo(
     // FIX: The return types for video operations are not explicitly exported from the SDK.
     // We use 'any' to access properties like 'done', 'name', 'error', and 'response'.
     let operation: any = await handleApiRequest(
-      () => ai.models.generateVideos(request),
+      () => getAi().models.generateVideos(request),
       { serviceName, model, prompt }
     );
     
@@ -620,7 +626,7 @@ export async function generateVideo(
     while (!operation.done) {
         await new Promise(resolve => setTimeout(resolve, 10000));
         operation = await handleApiRequest(
-          () => ai.operations.getVideosOperation({ operation: operation }),
+          () => getAi().operations.getVideosOperation({ operation: operation }),
           { serviceName, model, prompt: `Polling operation ${operation.name}` }
         );
     }
