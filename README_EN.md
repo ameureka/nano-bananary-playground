@@ -10,12 +10,10 @@
 
   <br/>
 
-  <video src="https://github.com/ameureka/nano-bananary-playground/raw/main/docs/banana_play.mp4" controls width="600">
-    Your browser does not support the video tag. Please <a href="https://github.com/ameureka/nano-bananary-playground/raw/main/docs/banana_play.mp4">click here to download the video</a>
-  </video>
-  
   <p>🎥 Project Demo Video / 项目演示视频</p>
-  
+
+  https://github.com/ameureka/nano-bananary-playground/assets/banana_play.mp4
+
   <p>
     <a href="https://www.youtube.com/watch?v=DnxjUjfClGQ">
       📺 Also available on YouTube / 也可以在 YouTube 观看
