@@ -1,254 +1,757 @@
 <div align="center">
 
-  <h1>Nano Bananary Playground (Next.js)</h1>
-  <p>简体中文 | English</p>
+  <h1>Nano Bananary Playground</h1>
+  <p>AI-Powered Image & Video Generation Platform</p>
+
+  <p>
+    <a href="#中文文档">简体中文</a> | <a href="#english-documentation">English</a>
+  </p>
+
+  <br/>
+
+  <a href="https://www.youtube.com/watch?v=DnxjUjfClGQ">
+    <img src="https://img.youtube.com/vi/DnxjUjfClGQ/maxresdefault.jpg" alt="Video Introduction" width="600" />
+  </a>
+  
+  <p>
+    <a href="https://www.youtube.com/watch?v=DnxjUjfClGQ">
+      🎥 Watch Video Introduction / 观看视频介绍
+    </a>
+  </p>
+
+  <br/>
 
   <p>
     <a href="https://img.shields.io/badge/Next.js-16.0.1-black?logo=next.js"><img alt="Next.js" src="https://img.shields.io/badge/Next.js-16.0.1-black?logo=next.js" /></a>
     <a href="https://img.shields.io/badge/React-19-61dafb?logo=react"><img alt="React" src="https://img.shields.io/badge/React-19-61dafb?logo=react" /></a>
     <a href="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript" /></a>
     <a href="https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel"><img alt="Vercel" src="https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel" /></a>
-    <a href="https://img.shields.io/github/stars/<owner>/<repo>?style=social"><img alt="Stars" src="https://img.shields.io/github/stars/<owner>/<repo>?style=social" /></a>
   </p>
 
   <p>
-    <a href="https://vercel.com/new/clone?repository-url=<REPO_URL>&project-name=nano-bananary-nextjs&repository-name=nano-bananary-nextjs&env=GEMINI_API_KEY&install-command=yarn&build-command=yarn%20build"><img alt="Deploy with Vercel" src="https://vercel.com/button" /></a>
+    <a href="https://vercel.com/new/clone?repository-url=https://github.com/ameureka/nano-bananary-playground&project-name=nano-bananary-playground&repository-name=nano-bananary-playground&env=GEMINI_API_KEY&install-command=yarn&build-command=yarn%20build"><img alt="Deploy with Vercel" src="https://vercel.com/button" /></a>
   </p>
 
 </div>
 
 ---
 
-## 简介（中文）
+# 中文文档
 
-- 一个基于 Next.js 16 + React 19 + TypeScript 的图像/视频 AI 增强与生成应用。
-- 通过 Google Gemini API 进行内容生成与编辑，支持在资产库中保存与预览图片与视频。
-- 使用 Zustand 管理状态，统一服务层 `services/geminiService.ts` 与服务端环境管理 `lib/env.server.ts`。
+## 📖 项目简介
+
+Nano Bananary Playground 是一个基于 Next.js 16 + React 19 + TypeScript 构建的现代化 AI 图像与视频生成平台。通过集成 Google Gemini API，提供强大的图像生成、编辑、视频创作和 AI 对话功能。
+
+### ✨ 核心特性
+
+- 🎨 **图像生成与编辑**：文生图、图生图、图像编辑、风格迁移、批量处理
+- 🎬 **视频生成**：AI 驱动的视频内容创作
+- 💬 **智能对话**：基于 Gemini 的 AI 聊天助手
+- 📚 **资产库管理**：统一管理生成的图像和视频资源
+- 🌍 **国际化支持**：中英文双语界面
+- 🎭 **主题切换**：支持明暗主题
+- 📱 **响应式设计**：适配桌面端和移动端
+
+## 🏗️ 项目架构
 
 ### 技术栈
-- Next.js 16（App Router）
-- React 19
-- TypeScript 5
-- Zustand 5
-- @google/genai
 
-### 快速开始
-```bash
-# 安装依赖
-yarn
+```
+Frontend:
+├── Next.js 16 (App Router)
+├── React 19
+├── TypeScript 5
+├── Zustand 5 (状态管理)
+└── Material-UI (UI 组件库)
 
-# 配置环境变量
-echo "GEMINI_API_KEY=your_api_key_here" > .env.local
+Backend:
+├── Next.js API Routes
+├── Google Gemini API
+└── Server Actions
 
-# 开发模式
-yarn dev
-# 访问 http://localhost:3000 （如端口占用，Next 会自动切换）
-
-# 生产构建与启动
-yarn build && yarn start
+Development:
+├── ESLint
+├── Prettier
+└── Yarn
 ```
 
-### 环境变量
-- `GEMINI_API_KEY`（必填）：在服务端读取，文件 `lib/env.server.ts` 会在缺失时抛错。
-- 仅在服务端组件、API Routes 或 Server Actions 中使用，不要在客户端直接读取。
+### 目录结构
 
-### 编程与结构说明
-- `app/`：页面与 API Routes（例如 `app/api/transformations/suggestions`）。
-- `components/`：通用 UI（如资产卡片、选择弹窗）。
-- `store/`：Zustand stores（增强器、聊天、资产库、日志）。
-- `services/geminiService.ts`：与 Gemini API 的集中式交互与错误处理。
-- `lib/env.server.ts`：服务端环境变量访问（`GEMINI_API_KEY`）。
-- `types/`：通用类型与 API 响应体约束。
-- `next.config.ts`：图片远程加载、编译优化与实验特性。
+```
+nano-bananary-playground/
+├── app/                          # Next.js App Router
+│   ├── api/                      # API 路由
+│   │   ├── chat/                 # 聊天相关 API
+│   │   ├── image/                # 图像处理 API
+│   │   ├── video/                # 视频生成 API
+│   │   └── transformations/      # 转换建议 API
+│   ├── chat/                     # 聊天页面
+│   ├── library/                  # 资产库页面
+│   ├── layout.tsx                # 根布局
+│   ├── page.tsx                  # 首页（增强器）
+│   └── globals.css               # 全局样式
+│
+├── components/                   # React 组件
+│   ├── common/                   # 通用组件
+│   │   ├── EmptyState.tsx
+│   │   ├── ErrorMessage.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   ├── Toast.tsx
+│   │   └── ...
+│   ├── features/                 # 功能组件
+│   │   ├── chat/                 # 聊天功能
+│   │   ├── enhancer/             # 增强器功能
+│   │   └── library/              # 资产库功能
+│   └── layout/                   # 布局组件
+│       ├── MainLayout.tsx
+│       ├── Sidebar.tsx
+│       ├── TopAppBar.tsx
+│       └── BottomNav.tsx
+│
+├── store/                        # Zustand 状态管理
+│   ├── enhancerStore.ts          # 增强器状态
+│   ├── chatStore.ts              # 聊天状态
+│   ├── assetLibraryStore.ts      # 资产库状态
+│   ├── uiStore.ts                # UI 状态
+│   ├── logStore.ts               # 日志状态
+│   └── selectors.ts              # 状态选择器
+│
+├── services/                     # 服务层
+│   └── geminiService.ts          # Gemini API 集成
+│
+├── lib/                          # 工具库
+│   ├── env.server.ts             # 服务端环境变量
+│   ├── api-utils.ts              # API 工具函数
+│   ├── actions.ts                # Server Actions
+│   └── videoOperationStore.ts    # 视频操作存储
+│
+├── i18n/                         # 国际化
+│   ├── translations.ts           # 翻译配置
+│   ├── context.tsx               # i18n Context
+│   ├── zh.ts, en.ts              # 语言文件
+│   └── ...
+│
+├── types/                        # TypeScript 类型定义
+│   ├── api.ts                    # API 类型
+│   └── index.ts                  # 通用类型
+│
+├── theme/                        # 主题配置
+│   └── context.tsx               # 主题 Context
+│
+├── utils/                        # 工具函数
+│   └── fileUtils.ts              # 文件处理工具
+│
+├── .github/                      # GitHub 配置
+│   └── workflows/                # CI/CD 工作流
+│       └── deploy.yml
+│
+├── docs/                         # 文档
+├── next.config.ts                # Next.js 配置
+├── tsconfig.json                 # TypeScript 配置
+├── eslint.config.mjs             # ESLint 配置
+├── .prettierrc                   # Prettier 配置
+└── package.json                  # 项目依赖
+```
 
-### 资产库与视频支持
-- 生成/导出的视频 `objectUrl` 会保存到资产库，库页面通过 `<video>` 标签预览。
-- 选择弹窗仅展示图片用于模型输入，避免视频误选。
+## 🎯 设计思路
 
-### 标准发布与上线
-- 版本管理：遵循 SemVer（如 `v0.1.0`）。
-- 构建与运行：`yarn build && yarn start`。
-- 部署到 Vercel（推荐）：
-  - Git 集成（推送到 `main` 自动构建）。
-  - 或本地 CLI：
-    ```bash
-    npm i -g vercel
-    vercel link             # 关联项目
-    vercel env add GEMINI_API_KEY production
-    vercel deploy --prod
-    ```
+### 1. 架构设计原则
 
-### Vercel 快速部署按钮与配置示例
-- README 按钮（将 `<REPO_URL>` 替换为你的仓库地址）：
-  ```markdown
-  [![Deploy with Vercel](https://vercel.com/button)](
-    https://vercel.com/new/clone?repository-url=<REPO_URL>&project-name=nano-bananary-nextjs&repository-name=nano-bananary-nextjs&env=GEMINI_API_KEY&install-command=yarn&build-command=yarn%20build
-  )
-  ```
-- 可选 `vercel.json`（如需显式配置）：
-  ```json
-  {
-    "framework": "nextjs",
-    "buildCommand": "yarn build",
-    "installCommand": "yarn",
-    "env": { "GEMINI_API_KEY": "@gemini_api_key" }
-  }
-  ```
+**分层架构**
+- **表现层**：React 组件，负责 UI 渲染和用户交互
+- **状态层**：Zustand stores，管理应用状态
+- **服务层**：统一的 API 调用封装
+- **数据层**：API Routes 和 Server Actions
+
+**模块化设计**
+- 按功能模块组织代码（chat、enhancer、library）
+- 组件按职责分类（common、features、layout）
+- 清晰的依赖关系，避免循环依赖
+
+**类型安全**
+- 全面的 TypeScript 类型定义
+- API 请求/响应类型约束
+- 严格的类型检查
+
+### 2. 状态管理策略
+
+使用 Zustand 实现轻量级状态管理：
+
+```typescript
+// 增强器状态
+enhancerStore: {
+  - 转换类型选择
+  - 输入参数管理
+  - 生成结果处理
+  - 历史记录
+}
+
+// 聊天状态
+chatStore: {
+  - 消息列表
+  - 会话管理
+  - 流式响应处理
+}
+
+// 资产库状态
+assetLibraryStore: {
+  - 资产列表
+  - 筛选和排序
+  - 选择模式
+}
+
+// UI 状态
+uiStore: {
+  - 侧边栏展开/收起
+  - 模态框状态
+  - Toast 通知
+}
+```
+
+### 3. API 设计
+
+**RESTful 风格**
+```
+POST   /api/image/generate        # 生成图像
+POST   /api/image/edit            # 编辑图像
+POST   /api/image/batch           # 批量处理
+POST   /api/image/style-mimic     # 风格迁移
+POST   /api/video/generate        # 生成视频
+GET    /api/video/status/:id      # 查询视频状态
+POST   /api/chat/generate         # 聊天生成
+POST   /api/chat/preprocess       # 聊天预处理
+GET    /api/transformations/suggestions  # 获取转换建议
+```
+
+**统一响应格式**
+```typescript
+{
+  success: boolean;
+  data?: any;
+  error?: string;
+}
+```
+
+### 4. 服务关系图
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     用户界面层                            │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐              │
+│  │ 增强器页面 │  │  聊天页面  │  │ 资产库页面 │              │
+│  └──────────┘  └──────────┘  └──────────┘              │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│                    状态管理层                             │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐              │
+│  │Enhancer  │  │  Chat    │  │  Asset   │              │
+│  │  Store   │  │  Store   │  │  Store   │              │
+│  └──────────┘  └──────────┘  └──────────┘              │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│                     服务层                               │
+│              ┌──────────────────┐                       │
+│              │  geminiService   │                       │
+│              │  (统一 API 封装)  │                       │
+│              └──────────────────┘                       │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│                   API Routes 层                          │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐              │
+│  │  Image   │  │  Video   │  │   Chat   │              │
+│  │   API    │  │   API    │  │   API    │              │
+│  └──────────┘  └──────────┘  └──────────┘              │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│                  Google Gemini API                       │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 5. 核心功能实现
+
+**图像生成流程**
+1. 用户选择转换类型（文生图、图生图等）
+2. 输入参数（提示词、参考图像、配置）
+3. 前端验证 → 调用 API
+4. API Routes 处理请求 → geminiService
+5. Gemini API 生成结果
+6. 返回结果 → 更新状态 → 保存到资产库
+
+**视频生成流程**
+1. 用户输入视频描述和参数
+2. 调用 `/api/video/generate`
+3. 返回操作 ID（异步处理）
+4. 轮询 `/api/video/status/:id` 查询进度
+5. 完成后获取视频 URL
+6. 保存到资产库
+
+**聊天功能流程**
+1. 用户发送消息
+2. 可选：预处理（图像分析等）
+3. 调用 `/api/chat/generate`
+4. 流式返回响应
+5. 实时更新聊天界面
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js 18+
+- Yarn 或 npm
+- Google Gemini API Key
+
+### 安装步骤
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/ameureka/nano-bananary-playground.git
+cd nano-bananary-playground
+
+# 2. 安装依赖
+yarn install
+
+# 3. 配置环境变量
+echo "GEMINI_API_KEY=your_api_key_here" > .env.local
+
+# 4. 启动开发服务器
+yarn dev
+
+# 5. 访问应用
+# 打开浏览器访问 http://localhost:3000
+```
+
+### 环境变量配置
+
+创建 `.env.local` 文件：
+
+```env
+# 必填：Google Gemini API Key
+GEMINI_API_KEY=your_gemini_api_key
+
+# 可选：其他配置
+# NODE_ENV=development
+```
+
+## 📦 构建与部署
+
+### 本地构建
+
+```bash
+# 生产构建
+yarn build
+
+# 启动生产服务器
+yarn start
+```
+
+### Vercel 部署（推荐）
+
+**方式一：一键部署**
+
+点击上方的 "Deploy with Vercel" 按钮
+
+**方式二：CLI 部署**
+
+```bash
+# 安装 Vercel CLI
+npm i -g vercel
+
+# 登录
+vercel login
+
+# 关联项目
+vercel link
+
+# 添加环境变量
+vercel env add GEMINI_API_KEY production
+
+# 部署到生产环境
+vercel deploy --prod
+```
+
+**方式三：Git 集成**
+
+1. 将代码推送到 GitHub
+2. 在 Vercel 导入项目
+3. 配置环境变量
+4. 自动部署（推送到 main 分支时触发）
+
+## 🛠️ 开发指南
+
+### 代码规范
+
+```bash
+# 代码检查
+yarn lint
+
+# 代码格式化
+yarn format
+
+# 类型检查
+yarn type-check
+```
+
+### 分支管理
+
+- `main`：主分支，生产环境代码
+- `develop`：开发分支
+- `feat/*`：新功能分支
+- `fix/*`：bug 修复分支
+- `docs/*`：文档更新分支
+
+### 提交规范
+
+遵循 Conventional Commits：
+
+```
+feat: 新功能
+fix: bug 修复
+docs: 文档更新
+style: 代码格式调整
+refactor: 代码重构
+test: 测试相关
+chore: 构建/工具链相关
+```
+
+示例：
+```bash
+git commit -m "feat(enhancer): 添加批量图像处理功能"
+git commit -m "fix(chat): 修复流式响应中断问题"
+```
+
+## 🤔 设计思考
+
+### 为什么选择 Next.js？
+
+1. **全栈能力**：API Routes 和 Server Actions 简化后端开发
+2. **性能优化**：自动代码分割、图像优化、SSR/SSG
+3. **开发体验**：热重载、TypeScript 支持、文件路由
+4. **部署便捷**：Vercel 原生支持，零配置部署
+
+### 为什么使用 Zustand？
+
+1. **轻量级**：相比 Redux 更简单，无需 boilerplate
+2. **TypeScript 友好**：完整的类型推导
+3. **灵活性**：支持中间件、持久化、DevTools
+4. **性能**：基于 React hooks，细粒度更新
+
+### 为什么采用模块化组件设计？
+
+1. **可维护性**：职责清晰，易于定位和修改
+2. **可复用性**：通用组件可在多处使用
+3. **可测试性**：独立组件易于单元测试
+4. **团队协作**：降低代码冲突，提高开发效率
+
+### API 设计考虑
+
+1. **统一错误处理**：所有 API 返回统一格式
+2. **类型安全**：请求/响应类型约束
+3. **性能优化**：流式响应、异步处理
+4. **安全性**：服务端环境变量，避免 API Key 泄露
+
+## 📝 更新日志
+
+查看 [CHANGELOG.md](./CHANGELOG.md) 了解版本更新详情。
+
+## 🤝 贡献指南
+
+欢迎贡献代码！请遵循以下步骤：
+
+1. Fork 本仓库
+2. 创建功能分支 (`git checkout -b feat/amazing-feature`)
+3. 提交更改 (`git commit -m 'feat: add amazing feature'`)
+4. 推送到分支 (`git push origin feat/amazing-feature`)
+5. 创建 Pull Request
+
+## 📄 许可证
+
+本项目采用 MIT 许可证。
 
 ---
 
-## Introduction (English)
+# English Documentation
 
-- A Next.js 16 + React 19 + TypeScript app for AI-powered image/video enhancement and generation.
-- Uses Google Gemini API with a centralized service layer; assets (images/videos) can be saved and previewed.
-- Zustand for state, `services/geminiService.ts` for API interactions, `lib/env.server.ts` for server-only env access.
+## 📖 Project Overview
+
+Nano Bananary Playground is a modern AI-powered image and video generation platform built with Next.js 16, React 19, and TypeScript. Integrated with Google Gemini API, it provides powerful capabilities for image generation, editing, video creation, and AI conversations.
+
+### ✨ Key Features
+
+- 🎨 **Image Generation & Editing**: Text-to-image, image-to-image, editing, style transfer, batch processing
+- 🎬 **Video Generation**: AI-driven video content creation
+- 💬 **Smart Chat**: Gemini-powered AI chat assistant
+- 📚 **Asset Library**: Unified management of generated images and videos
+- 🌍 **Internationalization**: Bilingual interface (Chinese/English)
+- 🎭 **Theme Switching**: Light and dark theme support
+- 📱 **Responsive Design**: Desktop and mobile optimized
+
+## 🏗️ Architecture
 
 ### Tech Stack
-- Next.js 16 (App Router)
-- React 19
-- TypeScript 5
-- Zustand 5
-- @google/genai
 
-### Quick Start
+```
+Frontend:
+├── Next.js 16 (App Router)
+├── React 19
+├── TypeScript 5
+├── Zustand 5 (State Management)
+└── Material-UI (UI Components)
+
+Backend:
+├── Next.js API Routes
+├── Google Gemini API
+└── Server Actions
+
+Development:
+├── ESLint
+├── Prettier
+└── Yarn
+```
+
+### Project Structure
+
+```
+nano-bananary-playground/
+├── app/                          # Next.js App Router
+│   ├── api/                      # API routes
+│   ├── chat/                     # Chat page
+│   ├── library/                  # Asset library page
+│   └── page.tsx                  # Home (Enhancer)
+│
+├── components/                   # React components
+│   ├── common/                   # Common components
+│   ├── features/                 # Feature components
+│   └── layout/                   # Layout components
+│
+├── store/                        # Zustand state management
+│   ├── enhancerStore.ts
+│   ├── chatStore.ts
+│   ├── assetLibraryStore.ts
+│   └── uiStore.ts
+│
+├── services/                     # Service layer
+│   └── geminiService.ts          # Gemini API integration
+│
+├── lib/                          # Utilities
+│   ├── env.server.ts             # Server-side env vars
+│   └── api-utils.ts              # API utilities
+│
+├── i18n/                         # Internationalization
+├── types/                        # TypeScript types
+├── theme/                        # Theme configuration
+└── utils/                        # Utility functions
+```
+
+## 🎯 Design Philosophy
+
+### 1. Layered Architecture
+
+- **Presentation Layer**: React components for UI
+- **State Layer**: Zustand stores for state management
+- **Service Layer**: Unified API call encapsulation
+- **Data Layer**: API Routes and Server Actions
+
+### 2. State Management
+
+Zustand provides lightweight state management:
+
+- **enhancerStore**: Transformation types, parameters, results, history
+- **chatStore**: Messages, sessions, streaming responses
+- **assetLibraryStore**: Asset list, filtering, selection
+- **uiStore**: Sidebar, modals, toasts
+
+### 3. API Design
+
+RESTful API endpoints with unified response format:
+
+```typescript
+{
+  success: boolean;
+  data?: any;
+  error?: string;
+}
+```
+
+### 4. Service Architecture
+
+```
+User Interface Layer
+        ↓
+State Management Layer (Zustand)
+        ↓
+Service Layer (geminiService)
+        ↓
+API Routes Layer
+        ↓
+Google Gemini API
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- Yarn or npm
+- Google Gemini API Key
+
+### Installation
+
 ```bash
-# Install dependencies
-yarn
+# 1. Clone repository
+git clone https://github.com/ameureka/nano-bananary-playground.git
+cd nano-bananary-playground
 
-# Env vars
+# 2. Install dependencies
+yarn install
+
+# 3. Configure environment variables
 echo "GEMINI_API_KEY=your_api_key_here" > .env.local
 
-# Dev
+# 4. Start development server
 yarn dev
-# Visit http://localhost:3000 (auto port fallback if busy)
 
-# Production build & start
-yarn build && yarn start
+# 5. Open browser
+# Visit http://localhost:3000
 ```
 
 ### Environment Variables
-- `GEMINI_API_KEY` (required): Read server-side only via `lib/env.server.ts`.
-- Do not import server env helpers in client components.
 
-### Programming Details & Structure
-- `app/`: Pages and API Routes (e.g. `app/api/transformations/suggestions`).
-- `components/`: UI components (asset cards, selection modal).
-- `store/`: Zustand stores (enhancer, chat, asset library, logs).
-- `services/geminiService.ts`: Central Gemini API calls with error handling.
-- `lib/env.server.ts`: Server-only env helpers (`GEMINI_API_KEY`).
-- `types/`: Types and API contracts.
-- `next.config.ts`: Image remote patterns and compiler settings.
+Create `.env.local`:
 
-### Asset Library & Video Support
-- Video `objectUrl` is persisted, library previews with `<video>`.
-- Selection modal filters to images-only for model inputs.
+```env
+# Required: Google Gemini API Key
+GEMINI_API_KEY=your_gemini_api_key
+```
 
-### Standard Release & Deployment
-- Versioning: SemVer (e.g., `v0.1.0`).
-- Build & run: `yarn build && yarn start`.
-- Vercel deployment:
-  ```bash
-  npm i -g vercel
-  vercel link
-  vercel env add GEMINI_API_KEY production
-  vercel deploy --prod
-  ```
+## 📦 Build & Deploy
 
-### Vercel Quick Deploy Button & Config
-- README button (replace `<REPO_URL>`):
-  ```markdown
-  [![Deploy with Vercel](https://vercel.com/button)](
-    https://vercel.com/new/clone?repository-url=<REPO_URL>&project-name=nano-bananary-nextjs&repository-name=nano-bananary-nextjs&env=GEMINI_API_KEY&install-command=yarn&build-command=yarn%20build
-  )
-  ```
-- Optional `vercel.json`:
-  ```json
-  {
-    "framework": "nextjs",
-    "buildCommand": "yarn build",
-    "installCommand": "yarn",
-    "env": { "GEMINI_API_KEY": "@gemini_api_key" }
-  }
-  ```
+### Local Build
+
+```bash
+# Production build
+yarn build
+
+# Start production server
+yarn start
+```
+
+### Vercel Deployment (Recommended)
+
+**Option 1: One-Click Deploy**
+
+Click the "Deploy with Vercel" button above
+
+**Option 2: CLI Deploy**
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Login
+vercel login
+
+# Link project
+vercel link
+
+# Add environment variable
+vercel env add GEMINI_API_KEY production
+
+# Deploy to production
+vercel deploy --prod
+```
+
+**Option 3: Git Integration**
+
+1. Push code to GitHub
+2. Import project in Vercel
+3. Configure environment variables
+4. Auto-deploy on push to main branch
+
+## 🛠️ Development
+
+### Code Quality
+
+```bash
+# Lint
+yarn lint
+
+# Format
+yarn format
+
+# Type check
+yarn type-check
+```
+
+### Branch Management
+
+- `main`: Production code
+- `develop`: Development branch
+- `feat/*`: New features
+- `fix/*`: Bug fixes
+- `docs/*`: Documentation updates
+
+### Commit Convention
+
+Follow Conventional Commits:
+
+```
+feat: New feature
+fix: Bug fix
+docs: Documentation
+style: Code formatting
+refactor: Code refactoring
+test: Testing
+chore: Build/tooling
+```
+
+## 🤔 Design Decisions
+
+### Why Next.js?
+
+1. **Full-stack**: API Routes and Server Actions
+2. **Performance**: Auto code-splitting, image optimization, SSR/SSG
+3. **DX**: Hot reload, TypeScript support, file-based routing
+4. **Deployment**: Native Vercel support
+
+### Why Zustand?
+
+1. **Lightweight**: Simpler than Redux, no boilerplate
+2. **TypeScript-friendly**: Full type inference
+3. **Flexible**: Middleware, persistence, DevTools support
+4. **Performance**: React hooks-based, fine-grained updates
+
+### Why Modular Components?
+
+1. **Maintainability**: Clear responsibilities
+2. **Reusability**: Common components across features
+3. **Testability**: Isolated components for unit testing
+4. **Collaboration**: Reduced merge conflicts
+
+## 📝 Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for version history.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feat/amazing-feature`)
+3. Commit changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to branch (`git push origin feat/amazing-feature`)
+5. Create Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License.
 
 ---
 
-## Notes
-- Replace `<owner>/<repo>` in badges and `<REPO_URL>` in the deploy button with your actual repository.
-- Requires Node.js 18+.
-- Images remote patterns are pre-configured in `next.config.ts` for Gemini-related hosts.
-
-### CI 所需 GitHub Secrets（用于自动发布与 Vercel 部署）
-- `GEMINI_API_KEY`：用于构建与运行（服务端读取）。
-- `VERCEL_TOKEN`：Vercel 访问令牌。
-- `ORG_ID`：Vercel 组织 ID。
-- `PROJECT_ID`：Vercel 项目 ID。
-设置方式：GitHub 仓库 → Settings → Secrets and variables → Actions → New repository secret。
-
----
-
-## 发布流程（Release Guide, 中文 / English）
-
-### 中文
-- 版本号（语义化）：
-  ```bash
-  npm version patch   # 或 minor / major
-  git push && git push --tags
-  ```
-- GitHub Release：在仓库创建新 Release，附上变更日志。
-- 构建与上线：
-  ```bash
-  yarn build
-  yarn start
-  # Vercel（推荐）
-  vercel deploy --prod
-  ```
-- 生产环境变量：在 Vercel 项目 Settings → Environment Variables 添加 `GEMINI_API_KEY`。
-- 质量检查：
-  ```bash
-  yarn lint
-  ```
-
-### English
-- Version bump (SemVer):
-  ```bash
-  npm version patch   # or minor / major
-  git push && git push --tags
-  ```
-- GitHub Release: create a new release with changelog.
-- Build & launch:
-  ```bash
-  yarn build
-  yarn start
-  # Vercel (recommended)
-  vercel deploy --prod
-  ```
-- Production env variables: set `GEMINI_API_KEY` in Vercel Project Settings.
-- Quality checks:
-  ```bash
-  yarn lint
-  ```
-
----
-
-## 贡献指南（Contributing）
-
-### 中文
-- 分支规范：`feat/<scope>`, `fix/<scope>`, `docs/<scope>`, `chore/<scope>`。
-- 提交信息（Conventional Commits）：
-  - 示例：`feat(enhancer): support video preview in asset library`
-  - 类型：`feat|fix|docs|chore|refactor|test|perf`。
-- 开发流程：
-  - Fork 仓库 → 创建分支 → 本地运行 `yarn lint && yarn build` → 提交 PR。
-  - PR 请描述变更、截图（如涉及 UI）、以及对现有功能的影响。
-- 变更日志：在 `CHANGELOG.md` 的 `Unreleased` 下添加条目，按 Added/Changed/Fixed/Removed 分类。
-
-### English
-- Branch naming: `feat/<scope>`, `fix/<scope>`, `docs/<scope>`, `chore/<scope>`.
-- Conventional Commits:
-  - Example: `feat(enhancer): support video preview in asset library`
-  - Types: `feat|fix|docs|chore|refactor|test|perf`.
-- Workflow:
-  - Fork → create branch → run `yarn lint && yarn build` → open PR.
-  - Provide description, screenshots for UI changes, and impact analysis.
-- Changelog: add entries under `Unreleased` in `CHANGELOG.md` using Added/Changed/Fixed/Removed.
+<div align="center">
+  <p>Made with ❤️ by the Nano Bananary Team</p>
+  <p>Powered by Google Gemini API</p>
+</div>
