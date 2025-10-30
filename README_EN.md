@@ -12,12 +12,15 @@
 
   <p>🎥 Project Demo Video / 项目演示视频</p>
 
-  https://github.com/ameureka/nano-bananary-playground/assets/banana_play.mp4
+  <p>
+    <a href="./docs/banana_play.mp4">
+      <img src="https://img.youtube.com/vi/DnxjUjfClGQ/maxresdefault.jpg" alt="Click to watch demo video" width="600" />
+    </a>
+  </p>
 
   <p>
-    <a href="https://www.youtube.com/watch?v=DnxjUjfClGQ">
-      📺 Also available on YouTube / 也可以在 YouTube 观看
-    </a>
+    <a href="./docs/banana_play.mp4">📥 Download Video</a> | 
+    <a href="https://www.youtube.com/watch?v=DnxjUjfClGQ">📺 Watch on YouTube</a>
   </p>
 
   <br/>
